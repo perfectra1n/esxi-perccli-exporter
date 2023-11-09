@@ -16,6 +16,17 @@ app = Flask("ESXi PERCCLI Exporter")
 
 class PercMetrics():
     def __init__(self, username, password, host) -> None:
+        """Initialize the PercMetrics class
+
+        Parameters
+        ----------
+        username : string
+            The username of the user on the remote machine, to login as.
+        password : _type_
+            The password of the user on the remote machine, to login as.
+        host : _type_
+            The IP or hostname of the machine you want to get PERC metrics from.
+        """
         self.registry = CollectorRegistry()
         self.namespace = "megaraid"
         
@@ -194,6 +205,13 @@ class PercMetrics():
 
 
     def handle_common_controller(self, response):
+        """Handle the controller's common output
+
+        Parameters
+        ----------
+        response : dict
+            The response from the controller
+        """
         controller_index = response["Basics"]["Controller"]
 
         self.metrics["ctrl_info"].labels(
@@ -425,6 +443,13 @@ def load_config(file_path):
 
 @app.route("/metrics")
 def metrics_route():
+    """Create a Flash route for `/metrics`
+
+    Returns
+    -------
+    str
+        Either metrics or an error response
+    """
     target = request.args.get("target")
     if target and target in config["targets"]:
         username = config["targets"][target]["username"]
