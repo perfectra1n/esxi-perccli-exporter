@@ -2,6 +2,20 @@
 
 This is another Prometheus exporter, but is meant to target machines running ESXi that have a PERC RAID controller. This essentially leverages the [storcli.py](https://github.com/prometheus-community/node-exporter-textfile-collector-scripts/blob/f5c56e75208e5d1ba4ce90b8285e924ec3e17cda/storcli.py) textfile collector's functionality, but does so over `sshpass`. It's scuffed, I know, but it works. I couldn't find anything else that allowed me to fetch the RAID controller's metrics (even if it was just some SMART data).
 
+You can also find a `Dockerfile` in this repository if you would like to create a container out of it for yourself. Or you can fetch it via:
+```
+docker pull perfectra1n/esxi-perccli-exporter:latest
+```
+
+Otherwise, you can run:
+
+```bash
+cd esxi-perccli-exporter/
+pip install -r requirements.txt
+python main.py
+```
+in order to just run the exporter on `10424`. You'll probably need to set the `CONFIG_FILE_PATH` environment variable to the path where your config is stored, though.
+
 You'll need the following:
 
 - Enable remote SSH on the ESXi hosts
