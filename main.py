@@ -460,7 +460,7 @@ def metrics_route():
         return jsonify({"message": "Credentials not found"}), 500
 
 if __name__ == "__main__":
-    config_file_path = os.environ.get("CONFIG_FILE_PATH", "config.yaml")
+    config_file_path = os.environ.get("CONFIG_FILE_PATH", "/etc/prometheus/config.yml")
     perccli_path = os.environ.get("PERCCLI_FILE_PATH", "/opt/lsi/perccli/perccli")
     config = load_config(config_file_path)
     port = int(os.environ.get("PORT", 10424))
