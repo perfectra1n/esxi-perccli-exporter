@@ -1,2 +1,2 @@
 #!/bin/sh
-uwsgi app.ini
+python main.py

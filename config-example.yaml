@@ -1,0 +1,7 @@
+targets:
+  server1:
+    username: root
+    password: calvin
+  server2:
+    username: root
+    password: calvin
