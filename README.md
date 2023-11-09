@@ -8,7 +8,7 @@ You'll need the following:
 - Install `perccli` on the remote machine. You can download it [here](https://dl.dell.com/FOLDER04470715M/1/perccli_7.1-007.0127_linux.tar.gz), or find the driver page for it [here](https://www.dell.com/support/home/en-us/drivers/driversdetails?driverid=f48c2).
   - For ESXi, you can find the `.vib` version of the `perccli` [here](https://dl.dell.com/FOLDER04827986M/1/VMware_PERCCLI_6WTDV_7.3-007.0318.tar.gz), with the driver page for it [here](https://www.dell.com/support/home/en-us/drivers/driversdetails?driverid=6wtdv).
   - You can then use `sftp` to copy the `.vib` file over into something like the `/tmp` directory on the ESXi host.
-  - Then install the `.vib` via `esxcli software vib install -v=/tmp/vmware-perccli-007.1327.vib --force --maintenance-mode --no-sig-check`.
+  - Then install the `.vib` via `esxcli software vib install -v=/tmp/vmware-perccli-007.1327.vib --force --maintenance-mode --no-sig-check` (make sure you use the correct filename, and provide the full path to the file in the `-v` argument).
   - Then you're good to go!
 
 ### Configuration
