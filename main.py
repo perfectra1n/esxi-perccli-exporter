@@ -2,6 +2,7 @@
 import os
 import yaml
 import argparse
+import sys
 import json
 import subprocess
 from datetime import datetime
@@ -181,7 +182,7 @@ class PercMetrics():
 
     def main(self):
         """main"""
-        data = self.get_storcli_json("/cALL show all J")
+        data = self.get_perccli_json("/cALL show all J")
         
         valid_megaraid_drivers = ["megaraid_sas", "lsi_mr3"]
 
@@ -198,7 +199,7 @@ class PercMetrics():
                 elif response["Version"]["Driver Name"] == "mpt3sas":
                     self.handle_sas_controller(response)
         except KeyError as e:
-            print(e)
+            app.logger.error(e)
             pass
 
         return generate_latest(self.registry).decode()
@@ -338,7 +339,7 @@ class PercMetrics():
         )
 
         if response["Physical Drives"] > 0:
-            data = self.get_storcli_json("/cALL/eALL/sALL show all J")
+            data = self.get_perccli_json("/cALL/eALL/sALL show all J")
             drive_info = data["Controllers"][controller_index]["Response Data"]
         for physical_drive in response["PD LIST"]:
             self.create_metrics_of_physical_drive(physical_drive, drive_info, controller_index)
@@ -406,23 +407,25 @@ class PercMetrics():
                 attributes["SN"].strip(),
             ).set(1)
         except KeyError as e:
-            print(e)
+            app.logger.error(e)
             pass
 
 
-    def get_storcli_json(self, storcli_args):
-        """Get storcli output in JSON format."""
-        # Check if storcli is installed and executable
+    def get_perccli_json(self, perccli_args):
+        """Get perccli output in JSON format."""
+        # Check if perccli is installed and executable
         # if not (os.path.isfile(perccli_path) and os.access(perccli_path, os.X_OK)):
         #    raise SystemExit(1)
 
+
         perccli_cmd = (
-            f"sshpass -p {self.password} ssh {self.username}@{self.host} '"
+            f"sshpass -p {self.password} ssh -o StrictHostKeyChecking=no {self.username}@{self.host} '"
             + perccli_path
             + " "
-            + storcli_args
+            + perccli_args
             + "'"
         )
+        
 
         proc = subprocess.Popen(
             perccli_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
@@ -464,4 +467,4 @@ if __name__ == "__main__":
     perccli_path = os.environ.get("PERCCLI_FILE_PATH", "/opt/lsi/perccli/perccli")
     config = load_config(config_file_path)
     port = int(os.environ.get("PORT", 10424))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, debug=True)

@@ -1,5 +1,5 @@
 # Use the Python alpine image
-FROM python:3.9-alpine
+FROM python:3.11-alpine
 
 # Install sshpass and openssh
 RUN apk add --no-cache openssh sshpass
